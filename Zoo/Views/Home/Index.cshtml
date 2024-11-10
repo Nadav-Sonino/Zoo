@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Zoo.Models.Animal>
+@{
+    ViewData["Title"] = "Bro";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.ImageUrl" alt="Alternate Text" class="img-thumbnail" />
+                </td>
+                <td>
+                    <p>@item.Name</p>
+                </td>
+                <td>
+                    <p>@item.Description</p>
+                </td>
+                <td>
+                    <p>@item.Comments.Count()</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
