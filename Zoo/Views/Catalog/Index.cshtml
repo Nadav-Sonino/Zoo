@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<Zoo.Models.Animal>
 @{
-    ViewData["Title"] = "Bro";
+    ViewData["Title"] = "Catalog";
 }
+
 
 <table class="table">
     <thead>
@@ -19,8 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
+        @foreach (var item in Model){
             <tr>
                 <td>
                     <img src="@item.ImageUrl" alt="Alternate Text" class="img-fluid img-thumbnail" />
