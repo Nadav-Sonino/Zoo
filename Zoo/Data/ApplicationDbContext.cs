@@ -74,28 +74,24 @@ namespace Zoo.Data
                     CommentId = 1,
                     AnimalId = 1, // Lion
                     Content = "The lion looks majestic!",
-                    CreatedAt = DateTime.Now.AddDays(-2)
                 },
                 new Comment
                 {
                     CommentId = 2,
                     AnimalId = 2, // Elephant
                     Content = "Elephants are so intelligent.",
-                    CreatedAt = DateTime.Now.AddDays(-1)
                 },
                 new Comment
                 {
                     CommentId = 3,
                     AnimalId = 4, // Dolphin
                     Content = "Dolphins are my favorite!",
-                    CreatedAt = DateTime.Now
                 },
                 new Comment
                 {
                     CommentId = 4,
                     AnimalId = 1, // Lion
                     Content = "I love lions!",
-                    CreatedAt = DateTime.Now.AddHours(-5)
                 }
             );
         }
