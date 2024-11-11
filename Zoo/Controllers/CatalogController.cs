@@ -18,5 +18,10 @@ namespace Zoo.Controllers
             var animals = await context.Animals.Include(a => a.Comments).ToListAsync();
             return View(animals);
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            var animal = await context.Animals.Where(a => a.AnimalId == id).Include(a => a.Comments).Include(a => a.Category).SingleAsync();
+            return View(animal);
+        }
     }
 }

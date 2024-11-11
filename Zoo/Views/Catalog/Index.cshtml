@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Zoo.Models.Animal>
+﻿@model IEnumerable<Animal>
 @{
     ViewData["Title"] = "Catalog";
 }
@@ -32,7 +32,7 @@
                     <p>@item.Description</p>
                 </td>
                 <td>
-                    <p>@item.Comments.Count()</p>
+                    <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
                 </td>
             </tr>
         }
