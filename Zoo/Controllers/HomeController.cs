@@ -17,6 +17,7 @@ namespace Zoo.Controllers
         {
             var topAnimals = await context.Animals
             .Include(a => a.Comments)
+            .Include(a => a.Category)
             .OrderByDescending(a => a.Comments.Count)
             .Take(2)
             .ToListAsync();
