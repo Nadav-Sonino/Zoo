@@ -1,19 +1,32 @@
 ﻿@model IEnumerable<Animal>
 @{
     ViewData["Title"] = "Catalog";
+    var categories = ViewData["Categories"] as List<Category>;
+    int? selectedCategoryId = ViewData["SelectedCategoryId"] as int?;
 }
 
 <div class="row">
     <div class="col-8">
-        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+        <form method="get" id="searchForm">
+            <input class="form-control" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Type to search..." />
+            <!-- Include other parameters to maintain state -->
+            <input type="hidden" name="categoryId" value="@ViewData["SelectedCategoryId"] ?? 0" />
+            <input type="hidden" name="page" value="0" />
+        </form>
     </div>
     <div class="col-4">
-        <select class="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
+
+        <form method="get" id="categoryForm">
+            <select class="form-select" name="categoryId" onchange="this.form.submit();">
+                <option value="0">All Categories</option>
+                @foreach (var category in categories!)
+                {
+                    <option value="@category.CategoryId" selected="@(category.CategoryId == selectedCategoryId ? "selected" : null)">
+                        @category.Name
+                    </option>
+                }
+            </select>
+        </form>
     </div>
 </div>
 

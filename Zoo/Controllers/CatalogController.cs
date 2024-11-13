@@ -15,22 +15,55 @@ namespace Zoo.Controllers
 
         }
 
-        public async Task<IActionResult> Index(int page = 0)
+        public async Task<IActionResult> Index(int? categoryId, string searchTerm, int page = 0)
         {
-            const int PageSize = 4;
-            ViewData["CurrentPage"] = page;
+            int pageSize = 6;
 
-            var totalAnimals = await context.Animals.CountAsync();
-            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalAnimals / PageSize);
+            // Fetch categories
+            var categories = await context.Categories.ToListAsync();
+            ViewData["Categories"] = categories;
 
-            var paginatedAnimals = await context.Animals
-                .Include(a => a.Comments)
-                .Skip(page * PageSize)
-                .Take(PageSize)
+            // Fetch animals
+            var animalsQuery = context.Animals.Include(a => a.Category).AsQueryable();
+
+            // Apply category filter if provided
+            if (categoryId.HasValue && categoryId.Value != 0)
+            {
+                animalsQuery = animalsQuery.Where(a => a.CategoryId == categoryId.Value);
+                ViewData["SelectedCategoryId"] = categoryId.Value;
+            }
+            else
+            {
+                ViewData["SelectedCategoryId"] = 0;
+            }
+
+            // Apply search filter if provided
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                animalsQuery = animalsQuery.Where(a => a.Name.Contains(searchTerm) || a.Description.Contains(searchTerm));
+                ViewData["SearchTerm"] = searchTerm;
+            }
+            else
+            {
+                ViewData["SearchTerm"] = string.Empty;
+            }
+
+            // Get total count after filters
+            int totalAnimals = await animalsQuery.CountAsync();
+
+            // Fetch animals for the current page
+            var animals = await animalsQuery
+                .OrderBy(a => a.AnimalId)
+                .Skip(page * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return View(paginatedAnimals);
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalAnimals / pageSize);
+
+            return View(animals);
         }
+
 
 
         public async Task<IActionResult> Details(int id, int page = 0)
