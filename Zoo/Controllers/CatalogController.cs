@@ -40,7 +40,7 @@ namespace Zoo.Controllers
             // Apply search filter if provided
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                animalsQuery = animalsQuery.Where(a => a.Name.Contains(searchTerm) || a.Description.Contains(searchTerm));
+                animalsQuery = animalsQuery.Where(a => a.Name.Contains(searchTerm));
                 ViewData["SearchTerm"] = searchTerm;
             }
             else
