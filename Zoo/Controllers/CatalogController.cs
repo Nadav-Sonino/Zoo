@@ -12,6 +12,7 @@ namespace Zoo.Controllers
         public CatalogController(ApplicationDbContext context)
         {
             this.context = context;
+
         }
 
         public async Task<IActionResult> Index()
@@ -20,31 +21,55 @@ namespace Zoo.Controllers
             return View(animals);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int page = 0)
         {
+            const int PageSize = 5;
             var animal = await context.Animals.Include(a => a.Category)
-            .Include(a => a.Comments)
-            .FirstOrDefaultAsync(a => a.AnimalId == id);
+                .Include(a => a.Comments)
+                .FirstOrDefaultAsync(a => a.AnimalId == id);
 
             if (animal == null)
             {
                 return NotFound();
             }
 
+            ViewData["CurrentCommentsPage"] = page;
+            var paginatedComments = animal.Comments
+                .Skip(page * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            ViewData["TotalCommentPages"] = (int)Math.Ceiling((double)animal.Comments.Count / PageSize);
+            animal.Comments = paginatedComments;
+
             return View(animal);
         }
 
+
+        public IActionResult NextCommentsPage(int AnimalId, int currentPage)
+        {
+            return RedirectToAction("Details", new { id = AnimalId, page = currentPage + 1 });
+        }
+
+        public IActionResult PreviousCommentsPage(int AnimalId, int currentPage)
+        {
+            return RedirectToAction("Details", new { id = AnimalId, page = Math.Max(currentPage - 1, 0) });
+        }
+
+
         public async Task<IActionResult> AddComment(int AnimalId, string Content)
         {
+            if (string.IsNullOrWhiteSpace(Content) || Content.Length > 80)
+            {
+                return RedirectToAction("Details", new { id = AnimalId });
+            }
+
             var animal = await context.Animals.FindAsync(AnimalId);
             if (animal == null)
             {
                 return NotFound();
             }
-            if (Content.Length > 80) 
-            {
-                return RedirectToAction("Details", new { id = AnimalId });
-            }
+
             var comment = new Comment
             {
                 AnimalId = AnimalId,
@@ -56,5 +81,6 @@ namespace Zoo.Controllers
 
             return RedirectToAction("Details", new { id = AnimalId });
         }
+
     }
 }
