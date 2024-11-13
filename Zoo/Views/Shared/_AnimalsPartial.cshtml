@@ -8,12 +8,10 @@
                 <img src="@Url.Content(item.ImageUrl)" class="card-img-top" alt="@item.Name">
                 <div class="card-body">
                     <h4 class="card-title">Name: @item.Name</h4>
-                    <h4 class="card-title">Age: @item.Age</h4>
-                    <h4 class="card-title">Number of comments: @item.Comments.Count()</h4>
-                    @if(ViewData["Title"] == "Bro")
+                    @if((string)ViewData["Title"]! == "Bro")
                     {
-                        <h4 class="card-text">Description:</h4>
-                        <p>@item.Description</p>
+                        <h4 class="card-title">Description: @item.Description</h4>
+                        <h4 class="card-title">Number of comments: @item.Comments.Count()</h4>
                     }
                     else
                     {
