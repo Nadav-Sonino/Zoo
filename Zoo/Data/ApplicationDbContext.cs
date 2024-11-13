@@ -39,7 +39,7 @@ namespace Zoo.Data
                     Age = 5,
                     CategoryId = 1, // Mammal
                     Description = "King of the jungle.",
-                    ImageUrl = "/images/lion.jpg"
+                    ImageUrl = "/images/lion1.jpg"
                 },
                 new Animal
                 {
