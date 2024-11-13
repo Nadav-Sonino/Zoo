@@ -15,11 +15,23 @@ namespace Zoo.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 0)
         {
-            var animals = await context.Animals.Include(a => a.Comments).ToListAsync();
-            return View(animals);
+            const int PageSize = 4;
+            ViewData["CurrentPage"] = page;
+
+            var totalAnimals = await context.Animals.CountAsync();
+            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalAnimals / PageSize);
+
+            var paginatedAnimals = await context.Animals
+                .Include(a => a.Comments)
+                .Skip(page * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            return View(paginatedAnimals);
         }
+
 
         public async Task<IActionResult> Details(int id, int page = 0)
         {

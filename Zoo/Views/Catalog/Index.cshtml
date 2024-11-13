@@ -4,38 +4,31 @@
 }
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model){
-            <tr>
-                <td>
-                    <img src="@item.ImageUrl" alt="Alternate Text" class="img-fluid img-thumbnail" />
-                </td>
-                <td>
-                    <p>@item.Name</p>
-                </td>
-                <td>
-                    <p>@item.Description</p>
-                </td>
-                <td>
-                    <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+    await Html.RenderPartialAsync("_AnimalsPartial");
+}
 
+<nav aria-label="Animals Pagination">
+    <ul class="pagination">
+        @if ((int)ViewData["CurrentPage"]! > 0)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! - 1 )">Previous</a>
+            </li>
+        }
+
+        @for (int i = 0; i < (int)ViewData["TotalPages"]!; i++)
+        {
+            <li class="page-item @(i == (int)ViewData["CurrentPage"]! ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@(i + 1)</a>
+            </li>
+        }
+
+        @if ((int)ViewData["CurrentPage"]! < (int)ViewData["TotalPages"]! - 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! + 1 )">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

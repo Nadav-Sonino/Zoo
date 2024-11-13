@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Animal>
+
+<div class="row row-cols-auto">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card mb-3" style="width: 100%;">
+                <img src="@Url.Content(item.ImageUrl)" class="card-img-top" alt="@item.Name">
+                <div class="card-body">
+                    <h4 class="card-title">Name: @item.Name</h4>
+                    <h4 class="card-title">Age: @item.Age</h4>
+                    <h4 class="card-title">Number of comments: @item.Comments.Count()</h4>
+                    <h4 class="card-text">Description:</h4>
+                    <p>@item.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
