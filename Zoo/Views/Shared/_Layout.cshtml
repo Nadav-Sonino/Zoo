@@ -22,9 +22,19 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Catalog" asp-action="Index">Catalog</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Auth" asp-action="Login">Login</a>
-                    </li>
+                    
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Auth" asp-action="Logout">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Auth" asp-action="Login">Login</a>
+                        </li>
+                    }
                 </ul>
                 <button id="theme-toggle" class="btn btn-outline-secondary me-2">Dark Mode</button>
             </div>

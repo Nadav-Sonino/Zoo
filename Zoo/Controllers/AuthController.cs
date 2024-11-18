@@ -54,5 +54,10 @@ namespace Zoo.Controllers
 
             return RedirectToAction("Index", "Admin");
         }
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("JWT");
+            return RedirectToAction("Login");
+        }
     }
 }

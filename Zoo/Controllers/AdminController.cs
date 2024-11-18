@@ -10,10 +10,6 @@ namespace Zoo.Controllers
         {
             return View();
         }
-        public IActionResult Logout()
-        {
-            Response.Cookies.Delete("JWT");
-            return RedirectToAction("Login");
-        }
+        
     }
 }
