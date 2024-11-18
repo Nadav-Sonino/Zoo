@@ -3,6 +3,7 @@
     ViewData["Title"] = "Catalog";
     var categories = ViewData["Categories"] as List<Category>;
     int? selectedCategoryId = ViewData["SelectedCategoryId"] as int?;
+    string searchTerm = ViewData["SearchTerm"] as string ?? string.Empty;
 }
 
 <div class="row">
@@ -10,7 +11,7 @@
         <form method="get" id="searchForm">
             <input class="form-control" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Type to search..." />
             <!-- Include other parameters to maintain state -->
-            <input type="hidden" name="categoryId" value="@ViewData["SelectedCategoryId"] ?? 0" />
+            <input type="hidden" name="categoryId" value="@ViewData["SelectedCategoryId"]" />
             <input type="hidden" name="page" value="0" />
         </form>
     </div>
@@ -26,13 +27,17 @@
                     </option>
                 }
             </select>
+            <!-- Include hidden inputs to maintain state -->
+            <input type="hidden" name="searchTerm" value="@ViewData["SearchTerm"]" />
+            <input type="hidden" name="page" value="0" />
         </form>
+
     </div>
 </div>
 
 <br />
 
-<nav aria-label="Animals Pagination">
+<nav>
     <ul class="pagination">
         @if ((int)ViewData["CurrentPage"]! > 0)
         {
