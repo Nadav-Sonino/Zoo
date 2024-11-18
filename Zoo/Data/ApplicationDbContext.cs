@@ -9,6 +9,7 @@ namespace Zoo.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Animal> Animals { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,6 +19,10 @@ namespace Zoo.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Admin>().HasData(
+                new Admin { AdminId = 1, UserName = "Admin", HashPassword = BCrypt.Net.BCrypt.HashPassword("Admin@1234")}
+            );
 
             // Seed Categories
             modelBuilder.Entity<Category>().HasData(
