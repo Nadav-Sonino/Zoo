@@ -19,12 +19,16 @@
 
     <div class="col-sm">
         <h3>Leave a Comment</h3>
-        <form class="row" asp-action="AddComment" method="post">
+        <form class="needs-validation form-floating" asp-action="AddComment" method="post" class="col-12 mb-2" novalidate>
+
             <input type="hidden" name="AnimalId" value="@Model.AnimalId" />
-            <div class="col-12 mb-2">
-                <textarea class="form-control" name="Content" placeholder="Your comment" rows="3" required></textarea>
-            </div>
+
+            <input type="text" class="form-control col-5" maxlength="80" id="floatingInputValue" name="Content" placeholder="" rows="1" required></inputtyp>
+            <label for="floatingInputValue">Comment</label>
+
+
             <div class="col-auto">
+                <br />
                 <button type="submit" class="btn btn-primary">Post</button>
             </div>
         </form>
