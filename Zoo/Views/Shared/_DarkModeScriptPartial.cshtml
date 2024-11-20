@@ -1,9 +1,7 @@
 ﻿<script>
-    // Get the toggle button and the body element
     const themeToggleBtn = document.getElementById('theme-toggle');
     const body = document.body;
 
-    // Function to toggle the theme
     function toggleTheme() {
         if (body.getAttribute('data-bs-theme') === 'dark') {
             body.setAttribute('data-bs-theme', 'light');
@@ -16,7 +14,6 @@
         localStorage.setItem('theme', body.getAttribute('data-bs-theme'));
     }
 
-    // Event listener for the toggle button
     themeToggleBtn.addEventListener('click', toggleTheme);
 
     // Load theme preference from localStorage on page load
