@@ -52,12 +52,12 @@ namespace Zoo.Controllers
             });
 
 
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Logout()
         {
             Response.Cookies.Delete("JWT");
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
