@@ -1,0 +1,31 @@
+﻿<nav>
+    <ul class="pagination justify-content-center">
+        @if ((int)ViewData["CurrentPage"]! > 0)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! - 1 )">Previous</a>
+            </li>
+        }
+
+        @for (int i = 0; i < (int)ViewData["TotalPages"]!; i++)
+        {
+            <li class="page-item @(i == (int)ViewData["CurrentPage"]! ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@(i + 1)</a>
+            </li>
+        }
+
+        @if ((int)ViewData["CurrentPage"]! < (int)ViewData["TotalPages"]! - 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! + 1 )">Next</a>
+            </li>
+        }
+    </ul>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <td>
+            <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateAnimal">Delete</a>
+        </td>
+    }
+</nav>

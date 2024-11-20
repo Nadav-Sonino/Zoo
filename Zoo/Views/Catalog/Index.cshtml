@@ -6,8 +6,8 @@
     string searchTerm = ViewData["SearchTerm"] as string ?? string.Empty;
 }
 
-<div class="row">
-    <div class="col-8">
+<div class="row mb-3">
+    <div class="col-sm-8 mb-3 mb-sm-0">
         <form method="get" id="searchForm">
             <input class="form-control" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Type to search..." />
             <!-- Include other parameters to maintain state -->
@@ -15,7 +15,7 @@
             <input type="hidden" name="page" value="0" />
         </form>
     </div>
-    <div class="col-4">
+    <div class="col-sm-4">
 
         <form method="get" id="categoryForm">
             <select class="form-select" name="categoryId" onchange="this.form.submit();">
@@ -35,33 +35,10 @@
     </div>
 </div>
 
-<br />
 
-<nav>
-    <ul class="pagination">
-        @if ((int)ViewData["CurrentPage"]! > 0)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! - 1 )">Previous</a>
-            </li>
-        }
-
-        @for (int i = 0; i < (int)ViewData["TotalPages"]!; i++)
-        {
-            <li class="page-item @(i == (int)ViewData["CurrentPage"]! ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-page="@i">@(i + 1)</a>
-            </li>
-        }
-
-        @if ((int)ViewData["CurrentPage"]! < (int)ViewData["TotalPages"]! - 1)
-        {
-            <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-route-page="@( (int)ViewData["CurrentPage"]! + 1 )">Next</a>
-            </li>
-        }
-    </ul>
-</nav>
 
 @{
+    await Html.RenderPartialAsync("_CatalogPaginationPartial");
     await Html.RenderPartialAsync("_AnimalsPartial");
+    await Html.RenderPartialAsync("_CatalogPaginationPartial");
 }
