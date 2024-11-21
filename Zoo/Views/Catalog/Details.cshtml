@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    <div class="col-sm">
+    <div class="col-sm mb-3 mb-sm-0">
         <div class="card" style="width: 100%;">
             <img src="@Url.Content(Model.ImageUrl)" class="card-img-top" alt="@Model.Name">
             <div class="card-body">
@@ -19,11 +19,11 @@
 
     <div class="col-sm">
         <h3>Leave a Comment</h3>
-        <form class="needs-validation form-floating" asp-action="AddComment" method="post" class="col-12 mb-2" novalidate>
+        <form class="needs-validation form-floating" asp-action="AddComment" method="post" class="col-12 mb-2" >
 
             <input type="hidden" name="AnimalId" value="@Model.AnimalId" />
 
-            <input type="text" class="form-control col-5" maxlength="80" id="floatingInputValue" name="Content" placeholder="" rows="1" required></inputtyp>
+            <input type="text" class="form-control col-5" maxlength="80" id="floatingInputValue" name="Content" placeholder="" rows="1" required />
             <label for="floatingInputValue">Comment</label>
 
 
@@ -42,12 +42,20 @@
                         <td>
                             <p>@com.Content</p>
                         </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a class="btn btn-primary" asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@Model.AnimalId" asp-route-cid="@com.CommentId">Delete</a>
+                                
+                            </td>
+                        }
+
                     </tr>
                 }
             </tbody>
         </table>
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
+        <nav>
+            <ul class="pagination justify-content-center">
                 @if ((int)ViewData["CurrentCommentsPage"]! > 0)
                 {
                     <li class="page-item">
@@ -60,7 +68,7 @@
                 @for (int i = 0; i < (int)ViewData["TotalCommentPages"]!; i++)
                 {
                     <li class="page-item @(i == (int)ViewData["CurrentCommentsPage"]! ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Details", new { id = Model.AnimalId, page = i })">@(i + 1)</a>
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.AnimalId" asp-route-page="@i">@(i + 1)</a>
                     </li>
                 }
                 @if ((int)ViewData["CurrentCommentsPage"]! < (int)ViewData["TotalCommentPages"]! - 1)
