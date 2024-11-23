@@ -1,36 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Zoo.Models
 {
-    public class Animal
+    public class AnimalViewModel
     {
-        public int AnimalId { get; set; }
-
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Age is required")]
         [Range(0, 100, ErrorMessage = "Age must be between 0 and 100")]
         public int Age { get; set; }
 
-        [Display(Name = "Category")]
         [Required(ErrorMessage = "Category is required")]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
-
-        public Category Category { get; set; }
 
         [StringLength(500)]
         public string Description { get; set; }
 
-        public string ImagePath { get; set; }
-
-        [NotMapped]
+        [Required(ErrorMessage = "Please upload an image file.")]
         [Display(Name = "Upload Image")]
         public IFormFile ImageFile { get; set; }
-
-        public ICollection<Comment> Comments { get; set; }
     }
 }

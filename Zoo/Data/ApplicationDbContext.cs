@@ -44,7 +44,7 @@ namespace Zoo.Data
                     Age = 5,
                     CategoryId = 1, // Mammal
                     Description = "King of the jungle.",
-                    ImageUrl = "/images/lion1.jpg"
+                    ImagePath = "/images/lion1.jpg"
                 },
                 new Animal
                 {
@@ -53,7 +53,7 @@ namespace Zoo.Data
                     Age = 10,
                     CategoryId = 1, // Mammal
                     Description = "The largest land animal.",
-                    ImageUrl = "/images/elephant.jpg"
+                    ImagePath = "/images/elephant.jpg"
                 },
                 new Animal
                 {
@@ -62,7 +62,7 @@ namespace Zoo.Data
                     Age = 7,
                     CategoryId = 2, // Reptile
                     Description = "A large aquatic reptile.",
-                    ImageUrl = "/images/crocodile.jpg"
+                    ImagePath = "/images/crocodile.jpg"
                 },
                 new Animal
                 {
@@ -71,7 +71,7 @@ namespace Zoo.Data
                     Age = 8,
                     CategoryId = 3, // Aquatic
                     Description = "An intelligent aquatic mammal.",
-                    ImageUrl = "/images/dolphin.jpg"
+                    ImagePath = "/images/dolphin.jpg"
                 },
                 // New Animals
                 new Animal
@@ -81,7 +81,7 @@ namespace Zoo.Data
                     Age = 4,
                     CategoryId = 1, // Mammal
                     Description = "A large cat species native to Asia.",
-                    ImageUrl = "/images/tiger.jpg"
+                    ImagePath = "/images/tiger.jpg"
                 },
                 new Animal
                 {
@@ -90,7 +90,7 @@ namespace Zoo.Data
                     Age = 6,
                     CategoryId = 1, // Mammal
                     Description = "The tallest living terrestrial animal.",
-                    ImageUrl = "/images/giraffe.jpg"
+                    ImagePath = "/images/giraffe.jpg"
                 },
                 new Animal
                 {
@@ -99,7 +99,7 @@ namespace Zoo.Data
                     Age = 3,
                     CategoryId = 2, // Reptile
                     Description = "A large nonvenomous snake.",
-                    ImageUrl = "/images/python.jpg"
+                    ImagePath = "/images/python.jpg"
                 },
                 new Animal
                 {
@@ -108,7 +108,7 @@ namespace Zoo.Data
                     Age = 5,
                     CategoryId = 4, // Bird
                     Description = "A bird of prey with excellent vision.",
-                    ImageUrl = "/images/eagle.jpg"
+                    ImagePath = "/images/eagle.jpg"
                 },
                 new Animal
                 {
@@ -117,7 +117,7 @@ namespace Zoo.Data
                     Age = 2,
                     CategoryId = 4, // Bird
                     Description = "A flightless bird adapted to life in the water.",
-                    ImageUrl = "/images/penguin.jpg"
+                    ImagePath = "/images/penguin.jpg"
                 },
                 new Animal
                 {
@@ -126,7 +126,7 @@ namespace Zoo.Data
                     Age = 12,
                     CategoryId = 3, // Aquatic
                     Description = "A large fish known for its sharp teeth.",
-                    ImageUrl = "/images/shark.jpg"
+                    ImagePath = "/images/shark.jpg"
                 },
                 new Animal
                 {
@@ -135,7 +135,7 @@ namespace Zoo.Data
                     Age = 1,
                     CategoryId = 5, // Amphibian
                     Description = "A small animal that can live both on land and in water.",
-                    ImageUrl = "/images/frog.jpg"
+                    ImagePath = "/images/frog.jpg"
                 },
                 new Animal
                 {
@@ -144,7 +144,7 @@ namespace Zoo.Data
                     Age = 0,
                     CategoryId = 6, // Insect
                     Description = "An insect with colorful wings.",
-                    ImageUrl = "/images/butterfly.jpg"
+                    ImagePath = "/images/butterfly.jpg"
                 }
             );
 

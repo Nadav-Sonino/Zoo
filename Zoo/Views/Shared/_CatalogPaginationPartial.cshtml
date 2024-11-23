@@ -22,10 +22,5 @@
         }
     </ul>
 
-    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-    {
-        <td>
-            <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateAnimal">Delete</a>
-        </td>
-    }
+    
 </nav>
