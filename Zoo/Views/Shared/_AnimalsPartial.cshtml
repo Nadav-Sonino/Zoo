@@ -3,19 +3,53 @@
 <div class="row row-cols-auto">
     @foreach (var item in Model)
     {
-        <div class="col-sm6">
-            <div class="card sm-3" style="width: 100%;">
-                <img src="@Url.Content(item.ImageUrl)" class="card-img-top" alt="@item.Name">
+        <div class="col-sm-6">
+            <div class="card sm-3 mb-2 " style="width: 100%;">
+                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
                 <div class="card-body">
                     <h4 class="card-title">Name: @item.Name</h4>
-                    @if((string)ViewData["Title"]! == "Bro")
+                    @if ((string)ViewData["Title"]! == "Home")
                     {
                         <h4 class="card-title">Description: @item.Description</h4>
                         <h4 class="card-title">Number of comments: @item.Comments.Count()</h4>
                     }
+                    else if ((string)ViewData["Title"]! == "Details")
+                    {
+                        <h4 class="card-title">Age: @item.Age</h4>
+                        <h4 class="card-title">Category: @item.Category.Name</h4>
+                        <h4 class="card-text">Description:</h4>
+                        <p>@item.Description</p>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <form method="post"
+                                  asp-controller="Admin"
+                                  asp-action="DeleteAnimal"
+                                  asp-route-id="@item.AnimalId"
+                                  onsubmit="return confirm('Are you sure you want to delete this animal?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a class="btn btn-primary">Edit</a>
+                            </form>
+                        }
+                    }
                     else
                     {
-                        <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <form method="post"
+                                  asp-controller="Admin"
+                                  asp-action="DeleteAnimal"
+                                  asp-route-id="@item.AnimalId"
+                                  onsubmit="return confirm('Are you sure you want to delete this animal?');">
+                                <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
+
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a class="btn btn-primary">Edit</a>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
+                        }
                     }
                 </div>
             </div>

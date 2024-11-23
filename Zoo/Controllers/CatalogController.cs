@@ -19,14 +19,11 @@ namespace Zoo.Controllers
         {
             int pageSize = 6;
 
-            // Fetch categories
             var categories = await context.Categories.ToListAsync();
             ViewData["Categories"] = categories;
 
-            // Fetch animals
             var animalsQuery = context.Animals.Include(a => a.Category).AsQueryable();
 
-            // Apply category filter if provided
             if (categoryId.HasValue && categoryId.Value != 0)
             {
                 animalsQuery = animalsQuery.Where(a => a.CategoryId == categoryId.Value);
@@ -37,7 +34,6 @@ namespace Zoo.Controllers
                 ViewData["SelectedCategoryId"] = 0;
             }
 
-            // Apply search filter if provided
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 animalsQuery = animalsQuery.Where(a => a.Name.Contains(searchTerm));
@@ -48,10 +44,8 @@ namespace Zoo.Controllers
                 ViewData["SearchTerm"] = string.Empty;
             }
 
-            // Get total count after filters
             int totalAnimals = await animalsQuery.CountAsync();
 
-            // Fetch animals for the current page
             var animals = await animalsQuery
                 .OrderBy(a => a.AnimalId)
                 .Skip(page * pageSize)
@@ -69,6 +63,7 @@ namespace Zoo.Controllers
         public async Task<IActionResult> Details(int id, int page = 0)
         {
             const int PageSize = 5;
+
             var animal = await context.Animals.Include(a => a.Category)
                 .Include(a => a.Comments)
                 .FirstOrDefaultAsync(a => a.AnimalId == id);
@@ -79,6 +74,7 @@ namespace Zoo.Controllers
             }
 
             ViewData["CurrentCommentsPage"] = page;
+
             var paginatedComments = animal.Comments
                 .Skip(page * PageSize)
                 .Take(PageSize)
@@ -121,7 +117,7 @@ namespace Zoo.Controllers
                 Content = Content,
             };
 
-            context.Comments.Add(comment);
+            await context.Comments.AddAsync(comment);
             await context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = AnimalId });

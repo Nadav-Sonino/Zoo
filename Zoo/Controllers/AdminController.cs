@@ -24,9 +24,15 @@ namespace Zoo.Controllers
             return View();
         }
 
-        public IActionResult DeleteAnimal()
+        public async Task<IActionResult> DeleteAnimal(int id)
         {
-            return View();
+            var animal = await context.Animals
+                .FirstOrDefaultAsync(a => a.AnimalId == id);
+
+            context.Animals.Remove(animal);
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Catalog");
         }
 
         public async Task<IActionResult> DeleteComment(int id, int cid)

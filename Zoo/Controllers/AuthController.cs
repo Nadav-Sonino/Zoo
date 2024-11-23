@@ -52,7 +52,7 @@ namespace Zoo.Controllers
             });
 
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalog");
         }
         public IActionResult Logout()
         {

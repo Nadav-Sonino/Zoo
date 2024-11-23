@@ -9,7 +9,17 @@
 <div class="row mb-3">
     <div class="col-sm-8 mb-3 mb-sm-0">
         <form method="get" id="searchForm">
-            <input class="form-control" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Type to search..." />
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <div class="input-group mb-3">
+                    <button class="btn btn-outline-primary"  asp-controller="Admin" asp-action="CreateAnimal">Create Animal</button>
+                    <input name="searchTerm" type="text" class="form-control" placeholder="Type to search..." value="@ViewData["SearchTerm"]">
+                </div>
+            }
+            else
+            {
+                <input class="form-control" name="searchTerm" value="@ViewData["SearchTerm"]" placeholder="Type to search..." />
+            }
             <!-- Include other parameters to maintain state -->
             <input type="hidden" name="categoryId" value="@ViewData["SelectedCategoryId"]" />
             <input type="hidden" name="page" value="0" />
@@ -40,5 +50,6 @@
 @{
     await Html.RenderPartialAsync("_CatalogPaginationPartial");
     await Html.RenderPartialAsync("_AnimalsPartial");
+    <br />
     await Html.RenderPartialAsync("_CatalogPaginationPartial");
 }
