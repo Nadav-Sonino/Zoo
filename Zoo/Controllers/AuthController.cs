@@ -2,6 +2,7 @@
 using Zoo.Models;
 using Zoo.Data;
 using Zoo.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Zoo.Controllers
 {
@@ -23,6 +24,7 @@ namespace Zoo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(LoginAdmin admin)
         {
             if (!ModelState.IsValid)
@@ -54,6 +56,8 @@ namespace Zoo.Controllers
 
             return RedirectToAction("Index", "Catalog");
         }
+
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("JWT");

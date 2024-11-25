@@ -98,6 +98,7 @@ namespace Zoo.Controllers
         }
 
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(int AnimalId, string Content)
         {
             if (string.IsNullOrWhiteSpace(Content) || Content.Length > 80)

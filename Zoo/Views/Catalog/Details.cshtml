@@ -21,6 +21,7 @@
                           asp-action="DeleteAnimal"
                           asp-route-id="@Model.AnimalId"
                           onsubmit="return confirm('Are you sure you want to delete this animal?');">
+                        @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger">Delete</button>
                         <a class="btn btn-primary" asp-controller="Admin" asp-action="EditAnimal" asp-route-id="@Model.AnimalId">Edit</a>
                     </form>
@@ -33,7 +34,7 @@
     <div class="col-sm">
         <h3>Leave a Comment</h3>
         <form class="needs-validation form-floating" asp-action="AddComment" method="post" class="col-12 mb-2" >
-
+            @Html.AntiForgeryToken()
             <input type="hidden" name="AnimalId" value="@Model.AnimalId" />
 
             <input type="text" class="form-control col-5" maxlength="80" id="floatingInputValue" name="Content" placeholder="" rows="1" required />
@@ -63,6 +64,7 @@
                                       asp-route-id="@Model.AnimalId"
                                       asp-route-cid="@com.CommentId"
                                       onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                    @Html.AntiForgeryToken()
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>

@@ -26,6 +26,7 @@
                                   asp-action="DeleteAnimal"
                                   asp-route-id="@item.AnimalId"
                                   onsubmit="return confirm('Are you sure you want to delete this animal?');">
+                                @Html.AntiForgeryToken()
                                 <button type="submit" class="btn btn-danger">Delete</button>
                                 <a class="btn btn-primary" asp-controller="Admin" asp-action="EditAnimal" asp-route-id="@item.AnimalId">Edit</a>
                             </form>
@@ -40,6 +41,7 @@
                                   asp-action="DeleteAnimal"
                                   asp-route-id="@item.AnimalId"
                                   onsubmit="return confirm('Are you sure you want to delete this animal?');">
+                                @Html.AntiForgeryToken()
                                 <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
 
                                 <button type="submit" class="btn btn-danger">Delete</button>
