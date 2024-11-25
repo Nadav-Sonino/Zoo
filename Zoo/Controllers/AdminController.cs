@@ -125,38 +125,7 @@ namespace Zoo.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> EditAnimal(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var animal = await context.Animals.FindAsync(id);
-            if (animal == null)
-            {
-                return NotFound();
-            }
-            ViewData["Categories"] = await context.Categories.ToListAsync();
-            return View(animal);
-        }
-
-            // Ensure that Comments collection is not null
-            if (animal.Comments == null)
-                return NotFound();
-
-            // Find the comment to delete
-            var comment = animal.Comments.FirstOrDefault(c => c.CommentId == cid);
-
-            if (comment == null)
-                return NotFound();
-
-            // Remove the comment
-            animal.Comments.Remove(comment);
-
-            // Save changes asynchronously
-            await context.SaveChangesAsync();
+        
         private bool AnimalExists(int id)
         {
             return context.Animals.Any(e => e.AnimalId == id);
