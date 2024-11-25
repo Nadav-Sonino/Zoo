@@ -5,7 +5,7 @@
     {
         <div class="col-sm-6">
             <div class="card sm-3 mb-2 " style="width: 100%;">
-                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                <img src="@item.ImagePath" class="card-img-top" alt="@item.Name">
                 <div class="card-body">
                     <h4 class="card-title">Name: @item.Name</h4>
                     @if ((string)ViewData["Title"]! == "Home")
@@ -27,7 +27,7 @@
                                   asp-route-id="@item.AnimalId"
                                   onsubmit="return confirm('Are you sure you want to delete this animal?');">
                                 <button type="submit" class="btn btn-danger">Delete</button>
-                                <a class="btn btn-primary">Edit</a>
+                                <a class="btn btn-primary" asp-controller="Admin" asp-action="EditAnimal" asp-route-id="@item.AnimalId">Edit</a>
                             </form>
                         }
                     }
@@ -43,7 +43,7 @@
                                 <a class="btn btn-primary" asp-controller="Catalog" asp-action="Details" asp-route-id="@item.AnimalId">Details</a>
 
                                 <button type="submit" class="btn btn-danger">Delete</button>
-                                <a class="btn btn-primary">Edit</a>
+                                <a class="btn btn-primary" asp-controller="Admin" asp-action="EditAnimal" asp-route-id="@item.AnimalId">Edit</a>
                             </form>
                         }
                         else
