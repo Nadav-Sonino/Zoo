@@ -34,8 +34,10 @@
 
     </div>
 </div>
-
-<a class="btn btn-outline-primary" asp-controller="Admin" asp-action="CreateAnimal">Create Animal</a>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <a class="btn btn-outline-primary" asp-controller="Admin" asp-action="CreateAnimal">Create Animal</a>
+}
 
 @{
     await Html.RenderPartialAsync("_CatalogPaginationPartial");

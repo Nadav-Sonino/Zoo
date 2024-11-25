@@ -23,8 +23,11 @@ namespace Zoo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAnimal(int id)
         {
-            var animal = await context.Animals
-                .FirstOrDefaultAsync(a => a.AnimalId == id);
+            var animal = await context.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                return NotFound();
+            }
 
             context.Animals.Remove(animal);
             await context.SaveChangesAsync();
@@ -35,7 +38,6 @@ namespace Zoo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteComment(int id, int cid)
         {
-            // Fetch the animal including its comments
             var animal = await context.Animals
                 .Include(a => a.Comments)
                 .FirstOrDefaultAsync(a => a.AnimalId == id);
@@ -68,45 +70,13 @@ namespace Zoo.Controllers
                     Age = model.Age,
                     CategoryId = model.CategoryId,
                     Description = model.Description,
-                    ImageFile = model.ImageFile
                 };
 
-                if (animal.ImageFile != null && animal.ImageFile.Length > 0)
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    // Validate file size max 2MB
-                    if (animal.ImageFile.Length > 2097152)
-                    {
-                        ModelState.AddModelError("ImageFile", "The image file is too large (max 2MB).");
-                        ViewData["Categories"] = await context.Categories.ToListAsync();
-                        return View(model);
-                    }
+                    var result = await ProcessImageUpload(model.ImageFile);
 
-                    // Validate file type
-                    var extension = Path.GetExtension(animal.ImageFile.FileName).ToLowerInvariant();
-                    if (extension != ".jpg" && extension != ".jpeg")
-                    {
-                        ModelState.AddModelError("ImageFile", "Only JPG/JPEG images are allowed.");
-                        ViewData["Categories"] = await context.Categories.ToListAsync();
-                        return View(model);
-                    }
-
-                    // Generate unique file name
-                    var fileName = Path.GetRandomFileName() + extension;
-
-                    // Define the path to save the file
-                    var filePath = Path.Combine("wwwroot/images/animals", fileName);
-
-                    // Ensure directory exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-                    // Resize and save the image
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await ResizeImage(animal.ImageFile, stream, 1280, 854);
-                    }
-
-                    // Save the relative path to the database
-                    animal.ImagePath = "/images/animals/" + fileName;
+                    animal.ImagePath = result.ImagePath;
                 }
                 else
                 {
@@ -124,14 +94,119 @@ namespace Zoo.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditAnimal(int id)
+        {
+            var animal = await context.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                return NotFound();
+            }
 
-        
+            var viewModel = new AnimalVM
+            {
+                AnimalId = animal.AnimalId,
+                Name = animal.Name,
+                Age = animal.Age,
+                CategoryId = animal.CategoryId,
+                Description = animal.Description,
+                ImagePath = animal.ImagePath
+            };
+
+            ViewBag.Categories = await context.Categories.ToListAsync();
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAnimal(AnimalVM model)
+        {
+            if (model.ImageFile == null || model.ImageFile.Length == 0)
+            {
+                ModelState.Remove(nameof(model.ImageFile));
+            }
+
+            if (ModelState.IsValid)
+            {
+                var animalToUpdate = await context.Animals.FindAsync(model.AnimalId);
+                if (animalToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                animalToUpdate.Name = model.Name;
+                animalToUpdate.Age = model.Age;
+                animalToUpdate.CategoryId = model.CategoryId;
+                animalToUpdate.Description = model.Description;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    // Process image upload
+                    var result = await ProcessImageUpload(model.ImageFile);
+                    if (result.Success)
+                    {
+                        animalToUpdate.ImagePath = result.ImagePath;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("ImageFile", result.ErrorMessage);
+                        ViewBag.Categories = await context.Categories.ToListAsync();
+                        return View(model);
+                    }
+                }
+                
+                context.Update(animalToUpdate);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index", "Catalog");
+            }
+
+            ViewBag.Categories = await context.Categories.ToListAsync();
+            return View(model);
+        }
+
+        private async Task<(bool Success, string ImagePath, string ErrorMessage)> ProcessImageUpload(IFormFile imageFile)
+        {
+            // Validate file size (max 2MB)
+            if (imageFile.Length > 2097152)
+            {
+                return (false, null, "The image file is too large (max 2MB).");
+            }
+
+            // Validate file type
+            var fileName = imageFile.FileName;
+            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+            if (extension != ".jpg" && extension != ".jpeg")
+            {
+                return (false, null, "Only JPG/JPEG images are allowed.");
+            }
+
+
+            // Define the path to save the file
+            var filePath = Path.Combine("wwwroot/images/animals", fileName);
+
+            // Ensure directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            // Resize and save the image
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await ResizeImage(imageFile, stream, 1280, 854);
+            }
+
+
+            // Return the relative path to the new image
+            var relativeImagePath = "/images/animals/" + fileName;
+
+            return (true, relativeImagePath, null);
+        }
+
+
+
         private bool AnimalExists(int id)
         {
             return context.Animals.Any(e => e.AnimalId == id);
         }
-
-
 
         private async Task ResizeImage(IFormFile imageFile, Stream outputStream, int width, int height)
         {

@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Zoo.Models
 {
-    public class Animal
+    public class AnimalVM
     {
         public int AnimalId { get; set; }
 
@@ -18,14 +16,13 @@ namespace Zoo.Models
         [Required(ErrorMessage = "Category is required")]
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; } // No validation attributes
-
         [StringLength(500)]
         public string Description { get; set; }
 
         public string ImagePath { get; set; }
 
-        public ICollection<Comment> Comments { get; set; } // No validation attributes
+        // Include ImageFile if you're handling image uploads
+        [Display(Name = "Upload New Image")]
+        public IFormFile ImageFile { get; set; }
     }
-
 }
